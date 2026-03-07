@@ -1,0 +1,144 @@
+openapi: 3.0.3
+info:
+  title: Habit Tracker API
+  description: API для отслеживания пользовательских привычек
+  version: 0.1.0
+
+paths:
+
+  /habits:
+    get:
+      description: Получение списка всех привычек
+      responses:
+        "200":
+          description: Список привычек
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Habit'
+
+    post:
+      description: Создание новой привычки
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HabitRequest'
+      responses:
+        "201":
+          description: Привычка успешно создана
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Habit'
+        "400":
+          description: Ошибка в данных запроса
+
+  /habits/{habit_id}:
+    get:
+      description: Получение информации о конкретной привычке
+      parameters:
+        - name: habit_id
+          in: path
+          required: true
+          description: ID привычки
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        "200":
+          description: Информация о привычке
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Habit'
+        "404":
+          description: Привычка не найдена
+
+    delete:
+      description: Удаление привычки
+      parameters:
+        - name: habit_id
+          in: path
+          required: true
+          description: ID привычки
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        "204":
+          description: Привычка удалена
+        "404":
+          description: Привычка не найдена
+
+  /habits/{habit_id}/check:
+    post:
+      description: Отметить выполнение привычки
+      parameters:
+        - name: habit_id
+          in: path
+          required: true
+          description: ID привычки
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        "200":
+          description: Привычка отмечена как выполненная
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Habit'
+        "404":
+          description: Привычка не найдена
+
+components:
+
+  schemas:
+
+    Habit:
+      type: object
+      required:
+        - id
+        - name
+        - streak
+      properties:
+        id:
+          type: integer
+          description: Уникальный идентификатор привычки
+          example: 1
+        name:
+          type: string
+          description: Название привычки
+          example: "Drink water"
+        description:
+          type: string
+          description: Описание привычки
+          example: "Drink at least 2 liters of water daily"
+        streak:
+          type: integer
+          description: Количество дней подряд выполнения
+          minimum: 0
+          example: 5
+        created_at:
+          type: string
+          format: date-time
+          description: Дата создания привычки
+          example: "2025-03-01T10:00:00Z"
+
+    HabitRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Название привычки
+          example: "Morning exercise"
+        description:
+          type: string
+          description: Описание привычки
+          example: "10 minutes of stretching every morning"
