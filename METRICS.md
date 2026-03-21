@@ -1,5 +1,7 @@
 # Метрики: Prometheus, Grafana
 
+← [Описание проекта и запуск API (README)](./README.md)
+
 API отдаёт метрики в формате **Prometheus**; **Prometheus** по расписанию опрашивает эндпоинт `/metrics`; **Grafana** подключается к Prometheus как к источнику данных и строит графики.
 
 ## Что отдаёт приложение
@@ -70,6 +72,3 @@ docker compose up -d
 - `docker-compose.yml` - сервисы API, Prometheus, Grafana.
 - `prometheus/prometheus.yml` - targets и интервал scrape.
 - `habit-api/expressServer.js` - метрики и маршрут `/metrics`.
-
-Описание самого API см. [README.md](./README.md).
-
