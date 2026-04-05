@@ -2,7 +2,7 @@
 
 REST API для отслеживания привычек, выполненный по подходу **API First** с использованием спецификации **OpenAPI 3.0**.
 
-См. также: [метрики, Prometheus и Grafana](./METRICS.md).
+См. также: [метрики, Prometheus и Grafana](./METRICS.md), [логи, Loki и Grafana](./LOGS.md).
 
 ## О проекте
 

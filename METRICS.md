@@ -29,7 +29,7 @@ docker compose up -d
 |--------------|----------------------|---------------|
 | `habit-api`  | API и `/metrics`     | **8080**      |
 | `prometheus` | Сбор метрик (scrape) | **9090**      |
-| `grafana`    | Дашборды             | **3001**      |
+| `grafana`    | Дашборды             | **3010**      |
 
 Конфиг scrape: `prometheus/prometheus.yml` - job `habit-tracker-api`, target **`habit-api:8080`**, путь по умолчанию `/metrics`, интервал `scrape_interval: 15s`.
 
@@ -37,7 +37,7 @@ docker compose up -d
 
 ## Подключение Grafana к Prometheus
 
-1. **http://localhost:3001** (логин по умолчанию `admin` / `admin`)
+1. **http://localhost:3010** (логин по умолчанию `admin` / `admin`)
 2. **Connections → Data sources → Prometheus** - URL **`http://prometheus:9090`**
 3. **Save & test**, затем создайте дашборд
 
@@ -63,7 +63,7 @@ docker compose up -d
 
 ![Запрос http_requests_total в Prometheus - вкладка Table](./docs/prometheus-query.png)
 
-Дашборд в Grafana (**http://localhost:3001**) - две панели. **Первая** строится по запросу `sum by (route) (rate(http_requests_total[1m]))` - скорость запросов в секунду, разбитая по маршрутам. **Вторая** - `process_resident_memory_bytes`: резидентная память (RSS) процесса Node.js в байтах (в настройках панели задан unit **bytes (IEC)**).
+Дашборд в Grafana (**http://localhost:3010**) - две панели. **Первая** строится по запросу `sum by (route) (rate(http_requests_total[1m]))` - скорость запросов в секунду, разбитая по маршрутам. **Вторая** - `process_resident_memory_bytes`: резидентная память (RSS) процесса Node.js в байтах (в настройках панели задан unit **bytes (IEC)**).
 
 ![Grafana - RPS по маршруту и RSS процесса](./docs/grafana-dashboard.png)
 

@@ -4,7 +4,6 @@
   "description": "API для отслеживания пользовательских привычек",
   "main": "index.js",
   "scripts": {
-    "prestart": "npm install",
     "start": "node index.js"
   },
   "keywords": [
