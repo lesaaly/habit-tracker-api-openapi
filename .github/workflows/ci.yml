@@ -4,6 +4,9 @@ permissions:
   contents: read
   packages: write
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   push:
     branches:
@@ -96,5 +99,4 @@ jobs:
           file: ./habit-api/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}/habit-api:sha-${{ github.sha }}
             ghcr.io/${{ github.repository }}/habit-api:latest
