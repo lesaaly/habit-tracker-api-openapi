@@ -39,7 +39,7 @@ class ExpressServer {
       res.on("finish", () => {
         httpRequestCounter.inc({
           method: req.method,
-          route: (req.route && req.route.path) ? req.route.path : req.path,
+          route: req.route && req.route.path ? req.route.path : req.path,
           status: res.statusCode,
         });
       });

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-const Service = require('./Service');
-const logger = require('../logger');
+const Service = require("./Service");
+const logger = require("../logger");
 
 const habits = [];
 let nextId = 1;
@@ -16,148 +16,158 @@ function habitIndex(id) {
 }
 
 /**
-* Получение списка всех привычек
-*
-* returns List
-* */
-const habitsGET = () => new Promise(
-  async (resolve, reject) => {
+ * Получение списка всех привычек
+ *
+ * returns List
+ * */
+const habitsGET = () =>
+  new Promise(async (resolve, reject) => {
     try {
-      logger.info('business: list habits', { count: habits.length });
+      logger.info("business: list habits", { count: habits.length });
       resolve(Service.successResponse(habits));
     } catch (e) {
-      reject(Service.rejectResponse(
-        e.message || 'Invalid input',
-        e.status || 405,
-      ));
+      reject(
+        Service.rejectResponse(e.message || "Invalid input", e.status || 405),
+      );
     }
-  },
-);
+  });
 
 /**
-* Отметить выполнение привычки
-*
-* habitUnderscoreid Integer ID привычки
-* returns Habit
-* */
-const habitsHabitIdCheckPOST = ({ habitUnderscoreid }) => new Promise(
-  async (resolve, reject) => {
+ * Отметить выполнение привычки
+ *
+ * habitUnderscoreid Integer ID привычки
+ * returns Habit
+ * */
+const habitsHabitIdCheckPOST = ({ habitUnderscoreid }) =>
+  new Promise(async (resolve, reject) => {
     try {
       const habit = findHabit(habitUnderscoreid);
       if (!habit) {
-        logger.warn('business: check habit — not found', { habitId: habitUnderscoreid });
-        reject(Service.rejectResponse({ message: 'Привычка не найдена' }, 404));
+        logger.warn("business: check habit — not found", {
+          habitId: habitUnderscoreid,
+        });
+        reject(Service.rejectResponse({ message: "Привычка не найдена" }, 404));
         return;
       }
       habit.streak = (habit.streak || 0) + 1;
-      logger.info('business: habit checked', {
+      logger.info("business: habit checked", {
         habitId: habit.id,
         name: habit.name,
         streak: habit.streak,
       });
       resolve(Service.successResponse(habit));
     } catch (e) {
-      reject(Service.rejectResponse(
-        e.message || 'Invalid input',
-        e.status || 405,
-      ));
+      reject(
+        Service.rejectResponse(e.message || "Invalid input", e.status || 405),
+      );
     }
-  },
-);
+  });
 
 /**
-* Удаление привычки
-*
-* habitUnderscoreid Integer ID привычки
-* no response value expected for this operation
-* */
-const habitsHabitIdDELETE = ({ habitUnderscoreid }) => new Promise(
-  async (resolve, reject) => {
+ * Удаление привычки
+ *
+ * habitUnderscoreid Integer ID привычки
+ * no response value expected for this operation
+ * */
+const habitsHabitIdDELETE = ({ habitUnderscoreid }) =>
+  new Promise(async (resolve, reject) => {
     try {
       const idx = habitIndex(habitUnderscoreid);
       if (idx === -1) {
-        logger.warn('business: delete habit — not found', { habitId: habitUnderscoreid });
-        reject(Service.rejectResponse({ message: 'Привычка не найдена' }, 404));
+        logger.warn("business: delete habit — not found", {
+          habitId: habitUnderscoreid,
+        });
+        reject(Service.rejectResponse({ message: "Привычка не найдена" }, 404));
         return;
       }
       const removed = habits[idx];
       habits.splice(idx, 1);
-      logger.info('business: habit deleted', { habitId: removed.id, name: removed.name });
+      logger.info("business: habit deleted", {
+        habitId: removed.id,
+        name: removed.name,
+      });
       resolve(Service.successResponse(null, 204));
     } catch (e) {
-      reject(Service.rejectResponse(
-        e.message || 'Invalid input',
-        e.status || 405,
-      ));
+      reject(
+        Service.rejectResponse(e.message || "Invalid input", e.status || 405),
+      );
     }
-  },
-);
+  });
 
 /**
-* Получение информации о конкретной привычке
-*
-* habitUnderscoreid Integer ID привычки
-* returns Habit
-* */
-const habitsHabitIdGET = ({ habitUnderscoreid }) => new Promise(
-  async (resolve, reject) => {
+ * Получение информации о конкретной привычке
+ *
+ * habitUnderscoreid Integer ID привычки
+ * returns Habit
+ * */
+const habitsHabitIdGET = ({ habitUnderscoreid }) =>
+  new Promise(async (resolve, reject) => {
     try {
       const habit = findHabit(habitUnderscoreid);
       if (!habit) {
-        logger.warn('business: get habit — not found', { habitId: habitUnderscoreid });
-        reject(Service.rejectResponse({ message: 'Привычка не найдена' }, 404));
+        logger.warn("business: get habit — not found", {
+          habitId: habitUnderscoreid,
+        });
+        reject(Service.rejectResponse({ message: "Привычка не найдена" }, 404));
         return;
       }
-      logger.info('business: habit fetched', { habitId: habit.id, name: habit.name });
+      logger.info("business: habit fetched", {
+        habitId: habit.id,
+        name: habit.name,
+      });
       resolve(Service.successResponse(habit));
     } catch (e) {
-      reject(Service.rejectResponse(
-        e.message || 'Invalid input',
-        e.status || 405,
-      ));
+      reject(
+        Service.rejectResponse(e.message || "Invalid input", e.status || 405),
+      );
     }
-  },
-);
+  });
 
 /**
-* Создание новой привычки
-*
-* habitRequest HabitRequest
-* returns Habit
-* */
-const habitsPOST = (params) => new Promise(
-  async (resolve, reject) => {
+ * Создание новой привычки
+ *
+ * habitRequest HabitRequest
+ * returns Habit
+ * */
+const habitsPOST = (params) =>
+  new Promise(async (resolve, reject) => {
     try {
       const habitRequest = params.habitRequest || params.body || params;
-      const name = habitRequest && habitRequest.name ? String(habitRequest.name).trim() : '';
+      const name =
+        habitRequest && habitRequest.name
+          ? String(habitRequest.name).trim()
+          : "";
       if (!name) {
-        logger.warn('business: create habit — validation failed', { reason: 'empty name' });
-        reject(Service.rejectResponse({ message: 'name обязательно' }, 400));
+        logger.warn("business: create habit — validation failed", {
+          reason: "empty name",
+        });
+        reject(Service.rejectResponse({ message: "name обязательно" }, 400));
         return;
       }
       const created_at = new Date().toISOString();
       const habit = {
         id: nextId++,
         name,
-        description: habitRequest.description != null ? habitRequest.description : undefined,
+        description:
+          habitRequest.description != null
+            ? habitRequest.description
+            : undefined,
         streak: 0,
         created_at,
       };
       habits.push(habit);
-      logger.info('business: habit created', {
+      logger.info("business: habit created", {
         habitId: habit.id,
         name: habit.name,
-        hasDescription: habit.description != null && habit.description !== '',
+        hasDescription: habit.description != null && habit.description !== "",
       });
       resolve(Service.successResponse(habit, 201));
     } catch (e) {
-      reject(Service.rejectResponse(
-        e.message || 'Invalid input',
-        e.status || 405,
-      ));
+      reject(
+        Service.rejectResponse(e.message || "Invalid input", e.status || 405),
+      );
     }
-  },
-);
+  });
 
 module.exports = {
   habitsGET,
