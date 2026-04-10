@@ -22,4 +22,3 @@ describe('DefaultService', () => {
     expect(result.payload).to.have.property('created_at').that.is.a('string');
   });
 });
-

@@ -2,6 +2,21 @@
 // Copy this file, and add rule overrides as needed.
 {
   "extends": "airbnb-base",
+  "env": {
+    "node": true
+  },
+  "overrides": [
+    {
+      "files": ["test/**/*.js"],
+      "env": {
+        "mocha": true
+      },
+      "rules": {
+        "no-undef": "off",
+        "no-unused-expressions": "off"
+      }
+    }
+  ],
   "rules": {
     "no-console": "off",
     "linebreak-style": "off",
