@@ -39,7 +39,7 @@ class ExpressServer {
       res.on("finish", () => {
         httpRequestCounter.inc({
           method: req.method,
-          route: req.route?.path || req.path,
+          route: (req.route && req.route.path) ? req.route.path : req.path,
           status: res.statusCode,
         });
       });
@@ -51,6 +51,9 @@ class ExpressServer {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
     this.app.use(cookieParser());
+    this.app.get("/health", (req, res) => {
+      res.status(200).json({ status: "ok" });
+    });
     this.app.get("/metrics", async (req, res) => {
       res.set("Content-Type", client.register.contentType);
       res.end(await client.register.metrics());

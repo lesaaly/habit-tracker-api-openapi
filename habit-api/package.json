@@ -4,7 +4,9 @@
   "description": "API для отслеживания пользовательских привычек",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "lint": "eslint .",
+    "test": "mocha"
   },
   "keywords": [
     "openapi-generator",

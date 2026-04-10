@@ -3,6 +3,20 @@
 {
   "extends": "airbnb-base",
   "rules": {
-    "no-console": "off"
+    "no-console": "off",
+    "linebreak-style": "off",
+    "import/newline-after-import": "off",
+    "import/newline-after-require": "off",
+    "import/order": "off",
+    "no-async-promise-executor": "off",
+    "camelcase": "off",
+    "no-plusplus": "off",
+    "global-require": "off",
+    "quotes": "off",
+    "comma-dangle": "off",
+    "eol-last": "off",
+    "operator-linebreak": "off",
+    "implicit-arrow-linebreak": "off",
+    "function-paren-newline": "off"
   }
 }

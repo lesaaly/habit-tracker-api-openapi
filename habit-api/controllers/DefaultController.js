@@ -8,6 +8,7 @@
 
 const Controller = require('./Controller');
 const service = require('../services/DefaultService');
+
 const habitsGET = async (request, response) => {
   await Controller.handleRequest(request, response, service.habitsGET);
 };
@@ -27,7 +28,6 @@ const habitsHabitIdGET = async (request, response) => {
 const habitsPOST = async (request, response) => {
   await Controller.handleRequest(request, response, service.habitsPOST);
 };
-
 
 module.exports = {
   habitsGET,
