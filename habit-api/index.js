@@ -1,16 +1,23 @@
-const config = require('./config');
-const logger = require('./logger');
-const ExpressServer = require('./expressServer');
-
-const launchServer = async () => {
+const start = async () => {
   try {
-    this.expressServer = new ExpressServer(config.URL_PORT, config.OPENAPI_YAML);
-    this.expressServer.launch();
+    await require('./tracing');
+
+    const config = require('./config');
+    const logger = require('./logger');
+    const ExpressServer = require('./expressServer');
+
+    const expressServer = new ExpressServer(
+      config.URL_PORT,
+      config.OPENAPI_YAML
+    );
+
+    await expressServer.launch();
+
     logger.info('Express server running');
   } catch (error) {
-    logger.error('Express Server failure', error.message);
-    await this.close();
+    console.error('Startup error:', error);
+    process.exit(1);
   }
 };
 
-launchServer().catch(e => logger.error(e));
+start();

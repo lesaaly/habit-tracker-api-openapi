@@ -4,6 +4,11 @@ services:
     container_name: habit-api
     ports:
       - "8080:8080"
+    environment:
+      - OTEL_SERVICE_NAME=habit-api
+      - OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://tempo:4318/v1/traces
+    networks:
+      - observability
 
   prometheus:
     image: prom/prometheus:latest
@@ -14,6 +19,8 @@ services:
       - "9090:9090"
     depends_on:
       - habit-api
+    networks:
+      - observability
 
   grafana:
     image: grafana/grafana:latest
@@ -25,6 +32,9 @@ services:
     depends_on:
       - prometheus
       - loki
+      - tempo
+    networks:
+      - observability
 
   loki:
     image: grafana/loki:latest
@@ -33,6 +43,8 @@ services:
       - "3100:3100"
     depends_on:
       - habit-api
+    networks:
+      - observability
 
   promtail:
     image: grafana/promtail:latest
@@ -43,3 +55,21 @@ services:
       - ./promtail/promtail.yml:/etc/promtail/config.yml
     depends_on:
       - loki
+    networks:
+      - observability
+
+  tempo:
+    image: grafana/tempo:2.9.1
+    container_name: tempo
+    command: [ "-config.file=/etc/tempo.yml" ]
+    volumes:
+      - ./tempo/tempo.yml:/etc/tempo.yml
+    ports:
+      - "3200:3200"
+      - "4318:4318"
+      - "4317:4317"
+    networks:
+      - observability
+
+networks:
+ observability:
