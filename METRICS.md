@@ -1,6 +1,6 @@
 # Метрики: Prometheus, Grafana
 
-← [Описание проекта и запуск API (README)](./README.md)
+← [Описание проекта и запуск API (README)](./README.md) · [Логи, Loki и Grafana](./LOGS.md) · [Трейсы, Tempo и Grafana](./TRACES.md)
 
 API отдаёт метрики в формате **Prometheus**; **Prometheus** по расписанию опрашивает эндпоинт `/metrics`; **Grafana** подключается к Prometheus как к источнику данных и строит графики.
 

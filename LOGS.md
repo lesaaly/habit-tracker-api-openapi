@@ -1,6 +1,6 @@
 # Логи: Loki, Promtail, Grafana
 
-← [Описание проекта и запуск API (README)](./README.md) · [Метрики (Prometheus, Grafana)](./METRICS.md)
+← [Описание проекта и запуск API (README)](./README.md) · [Метрики (Prometheus, Grafana)](./METRICS.md) · [Трейсы, Tempo и Grafana](./TRACES.md)
 
 Приложение пишет логи в **stdout** контейнера (**Winston**, JSON в production). **Docker** сохраняет поток контейнера; **Promtail** читает логи через `docker.sock` и отправляет их в **Loki**; **Grafana** подключается к Loki и на дашборде показывает запросы **LogQL** (текстовые панели **Logs** и график **Time series**).
 
